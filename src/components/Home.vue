@@ -98,10 +98,6 @@
                 <el-input v-model="dialogUpData.userRealName" autocomplete="off"></el-input>
               </el-form-item>
 
-
-
-
-
 <!--              <el-form-item label="所在部门" >
                 <el-input v-model="dialogUpData.deptName" autocomplete="off"></el-input>
               </el-form-item>-->
