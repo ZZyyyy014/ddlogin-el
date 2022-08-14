@@ -102,6 +102,10 @@
                 <el-input v-model="dialogUpData.deptName" autocomplete="off"></el-input>
               </el-form-item>-->
 
+
+
+
+
                 <el-select   @visible-change="findAllDept"   v-model="dialogUpData.deptName" placeholder="所在部门">
                   <el-option
                     v-for="item in this.optionsDepts"
