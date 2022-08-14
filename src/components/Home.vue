@@ -263,6 +263,7 @@ components:{//组件
     //发现所有的公司
     findAllDept(){
       axi.get("/dept/findAllDept").then(res=>{
+        console.log(123)
         this.optionsDepts=res.data.data;
       })
     }
