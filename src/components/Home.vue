@@ -106,9 +106,9 @@
                 <el-input v-model="dialogUpData.deptName" autocomplete="off"></el-input>
               </el-form-item>-->
 
-                <el-select    v-model="dialogUpData.deptName" placeholder="所在部门">
+                <el-select   @visible-change="findAllDept"   v-model="dialogUpData.deptName" placeholder="所在部门">
                   <el-option
-                    v-for="item in this.findAllDept()"
+                    v-for="item in this.optionsDepts"
                     :key="item.deptId"
                     :label="item.deptName"
                     :value="item.deptId">
@@ -175,7 +175,7 @@ export default {
         spareV1:"",
         //所在公司名称
         firmName:"",
-        optionsDept:[],
+        optionsDepts:[],
 
 
       },
@@ -259,10 +259,11 @@ components:{//组件
       this.dialogUpOpen=false;
       location.reload();
     },
+
     //发现所有的公司
     findAllDept(){
       axi.get("/dept/findAllDept").then(res=>{
-        this.optionsDept=res.data.data;
+        this.optionsDepts=res.data.data;
       })
     }
 
