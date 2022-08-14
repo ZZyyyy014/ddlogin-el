@@ -100,6 +100,8 @@
 
 
 
+
+
 <!--              <el-form-item label="所在部门" >
                 <el-input v-model="dialogUpData.deptName" autocomplete="off"></el-input>
               </el-form-item>-->
@@ -112,6 +114,7 @@
                     :value="item.deptId">
                   </el-option>
                 </el-select>
+
 
 
               <el-form-item label="所在公司" >

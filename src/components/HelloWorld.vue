@@ -93,7 +93,7 @@ export default {
       this.$refs['ruleForms'].validate((valid) => {
         if(valid){
           //登录dd
-          axi.post("/user/ddlogin", {"userName": this.ruleForm.username,
+          axi.post("/user/ddlogin", {"userName": +this.ruleForm.username,
             "passWrod": this.ruleForm.password,
             "captcha":this.ruleForm.captcha}).then(res => {
             //获取后台传来的 token  存在就传入 不存在就不存入
