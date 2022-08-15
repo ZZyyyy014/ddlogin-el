@@ -1,7 +1,9 @@
-import axios from 'axios'; //映入axios
+import axios from 'axios';
+import {promise} from "ora"; //映入axios
 
 const axi = axios.create({
-  baseURL: 'http://localhost:9090/',
+
+  baseURL: 'http://192.168.202.151:9090/',
   timeout: 6000,  //请求6秒自动断开连接
   headers:{
     jwtToken:""
@@ -36,9 +38,7 @@ axi.interceptors.response.use(res => {
   //后端返回响应
   if (codes != 200) {
     //打印。。
-    alert(res.data.msg);
-
+   alert(res.data.msg);
   }
   return res;
-
 })

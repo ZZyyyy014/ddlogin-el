@@ -100,7 +100,7 @@ export default {
             if (res.data.data.jwtToken) {
               //跳转路由
               window.localStorage.setItem("jwtToken", res.data.data.jwtToken)
-              this.$router.push({name: "home"})
+              this.$router.push({name: "index"})
             }
           })
         }

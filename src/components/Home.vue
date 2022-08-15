@@ -1,12 +1,6 @@
 <template>
   <div>
 
-    <el-container>
-      <el-header>Header</el-header>
-      <el-container>
-        <el-aside width="120px">Aside</el-aside>
-
-        <el-main>
           <el-table @selection-change="selectMore"
                     :data="findAlllist.filter(data => !search || data.userRealName.toLowerCase().includes(search.toLowerCase()))"
                     border style="width: 100%">
@@ -74,19 +68,6 @@
             </el-table-column>
           </el-table>
 
-          <div class="inline-block">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :page-sizes="[5, 10, 20, 50]"
-              :page-size=this.pagesize
-              layout="sizes, prev, pager, next"
-              :total=this.total>
-            </el-pagination>
-            <el-button  style="display: inline-block" type="danger">删除上面所选(多选)</el-button>
-          </div>
-
-
           <el-dialog title="员工个人信息" :visible.sync="dialogUpOpen">
             <el-form :model="this.dialogUpData">
 
@@ -102,11 +83,18 @@
                 <el-input v-model="dialogUpData.deptName" autocomplete="off"></el-input>
               </el-form-item>-->
 
+              <span  >所在公司</span>
+              <el-select  @visible-change="findAllFrim" v-model="dialogUpData.sparessV1" placeholder="所在公司">
+                <el-option
+                  v-for="item in this.optionsFirms"
+                  :key="item.firmId"
+                  :label="item.firmName"
+                  :value="item.firmId">
+                </el-option>
+              </el-select>
 
-
-
-
-                <el-select   @visible-change="findAllDept"   v-model="dialogUpData.deptName" placeholder="所在部门">
+              <span>部门</span>
+              <el-select  @visible-change="findAllDept" v-model="dialogUpData.deptId" placeholder="所在部门">
                   <el-option
                     v-for="item in this.optionsDepts"
                     :key="item.deptId"
@@ -115,30 +103,26 @@
                   </el-option>
                 </el-select>
 
-
-
-              <el-form-item label="所在公司" >
-              <el-input v-model="dialogUpData.firmName" autocomplete="off">123</el-input>
-              </el-form-item>
-            </el-form>
-
-
-
-
-            <div slot="footer" class="dialog-footer">
+            <div  class="dialog-footer">
               <el-button @click="dialogUpOnefalse">取 消</el-button>
               <el-button type="primary" @click="dialogUpOne">确 定</el-button>
             </div>
+
+           </el-form>
           </el-dialog>
 
 
-
-        </el-main>
-      </el-container>
-    </el-container>
-
-
-
+          <div class="inline-block">
+            <el-pagination  style="height:40px"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :page-sizes="[10, 20, 50, 100]"
+                            :page-size=this.pagesize
+                            layout="sizes, prev, pager, next"
+                            :total=this.total>
+            </el-pagination>
+            <el-button    @click="deleteUserList"  type="danger">删除上面所选(多选)</el-button>
+          </div>
 
   </div>
 </template>
@@ -159,7 +143,7 @@ export default {
       findAlllist: [],
       checks: [],
       search:"",
-      pagesize:5,
+      pagesize:10,
       pageNum:1,
       total:0,
       dialogUpOpen: false,
@@ -172,14 +156,13 @@ export default {
         userName:"",
         userRealName:"",
         // 所在公司id
-        spareV1:"",
+        sparessV1:"",
         //所在公司名称
         firmName:"",
-        optionsDepts:[],
-
-
       },
       dialogFormVisible: false,
+      optionsDepts:[],
+      optionsFirms:[],
 
     }
   },//参数结束
@@ -200,6 +183,7 @@ components:{//组件
       }
     },
 
+    //删除多条数据 多选
     deleteUserList() {
       console.log(this.checks)
       var selects = [];
@@ -216,6 +200,8 @@ components:{//组件
             location.reload();
           })
         }
+      }else {
+        this.$message.error("请选择至少1条数据");
       }
     },
 
@@ -248,13 +234,19 @@ components:{//组件
       this.dialogUpOpen=true;
       this.dialogUpData=row;
     },
+
     dialogUpOne(){
+
       axi.post("/user/updateUserFindAllVo",this.dialogUpData).then(res=>{
         if(res.status==200){
           this.dialogUpOpen=false;
         }
-      })
+      });
+      // 刷新页面
+       location.reload();
     },
+
+    // 取消改变 要重新加载 应为v-model 是双向绑定的
     dialogUpOnefalse(){
       this.dialogUpOpen=false;
       location.reload();
@@ -263,17 +255,25 @@ components:{//组件
     //发现所有的公司
     findAllDept(){
       axi.get("/dept/findAllDept").then(res=>{
-        console.log(123)
         this.optionsDepts=res.data.data;
       })
+    },
+
+    //发现所有公司
+    findAllFrim(){
+    axi.get("/firm/findAllFirm").then(res=>{
+        this.optionsFirms=res.data.data;
+      })
     }
+
+
 
 
 
   },//方法结束
 
 
-  mounted() {
+    created() {
     axi.get("/user/findAllLogin?pageNum="+this.pageNum+"&pageSize="+this.pagesize).then(res => {
       if (!res.data.state) {
         this.findAlllist = res.data.data.list
@@ -296,7 +296,6 @@ components:{//组件
 }
 
 .el-aside {
-  background-color: chocolate;
   color: #333;
   text-align: center;
   line-height: 200px;
