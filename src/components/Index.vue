@@ -57,7 +57,7 @@
                       <i class="el-icon-location"></i>
                       <span>订单模块</span>
                     </template>
-                    <el-menu-item index="3-1">
+                    <el-menu-item index="/order">
                       <template slot="title">
                         <i class="el-icon-menu"></i>
                         <span>订单操作</span>
@@ -88,12 +88,9 @@ export default {
     }
   },
 methods:{
+    //侧边栏收缩
   buttonssss(){
      this.iscollapse=!this.iscollapse  ;
-
-
-
-
   }
 
 }

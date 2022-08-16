@@ -87,6 +87,7 @@ export default {
 
     restcaptcha() {  //刷新验证码
       this.ruleForm.imgsrc = axi.defaults.baseURL + "/user/captcha.jpg?t=" + new Date().getTime();
+      console.log(this.ruleForm.imgsrc)
     },
     logindd() {
       //验证  $refs=ref 属性
@@ -112,7 +113,7 @@ export default {
   },
 
 
-  mounted(){
+  created(){
     this.restcaptcha();
   }
 

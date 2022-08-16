@@ -1,6 +1,5 @@
 <template>
   <div>
-
           <el-table @selection-change="selectMore"
                     :data="findAlllist.filter(data => !search || data.userRealName.toLowerCase().includes(search.toLowerCase()))"
                     border style="width: 100%">
@@ -66,6 +65,7 @@
                 </el-button>
               </template>
             </el-table-column>
+
           </el-table>
 
           <el-dialog title="员工个人信息" :visible.sync="dialogUpOpen">
@@ -132,7 +132,7 @@
 
 
 <script>
-import axi from "../util/request";
+import axi from "../../util/request";
 
 
 
@@ -221,6 +221,8 @@ components:{//组件
       this.pageNum=val
       this.prevClick();
     },
+
+    //从后台获取数据
     prevClick(){
       axi.get("/user/findAllLogin?pageNum="+this.pageNum+"&pageSize="+this.pagesize).then(res => {
         if (!res.data.state) {

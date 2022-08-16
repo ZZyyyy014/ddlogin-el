@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import Home from "../components/Home";
+import Home from "../components/home/Home";
 import Indexx from "../components/Index"
-import Homeinset from "../components/homeinset";
+import Homeinset from "../components/home/homeinset";
+import Order from "../components/order/order";
+
 
 Vue.use(Router)
 
@@ -14,12 +16,6 @@ export default new Router({
       name: 'HelloWorld',
       component: HelloWorld,
     },
- /*
-  {
-      path: '/home',
-      name: 'home',
-      component: Home,
-    },*/
     {
       path:'/index',
       name:'index',
@@ -29,8 +25,13 @@ export default new Router({
         [
           {path: '/home', name: 'home', component: Home,},
           {path:"/homeinset", name: 'homeinset',component:Homeinset},
+          {path:'/order',name:'order',component:Order},
         ]
     },
+
+
+
+
   ]
 
 

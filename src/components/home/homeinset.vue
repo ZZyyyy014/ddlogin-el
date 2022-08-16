@@ -38,7 +38,7 @@
       <el-button @click="resetForm('ruleForm')">重置</el-button>
 
       <el-button @click="createDept">创建部门</el-button>
-      <el-button @click="resetForm('ruleForm')">创建公司</el-button>
+      <el-button @click="createFirm">创建公司</el-button>
     </el-form>
 
     <el-dialog
@@ -49,16 +49,30 @@
       <el-input v-model="createdeptName" placeholder="请输入部门名称"></el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="createdeptName">确 定</el-button>
+    <el-button type="primary" @click="createdeptNameOne">确 定</el-button>
    </span>
     </el-dialog>
+
+
+    <el-dialog
+      title="创建公司"
+      :visible.sync="firmDialogVisible"
+      width="30%"
+      center>
+      <el-input v-model="createdFirmName" placeholder="请输入公司名称"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="firmDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="createfirmOne">确 定</el-button>
+   </span>
+    </el-dialog>
+
 
 
   </div>
 </template>
 
 <script>
-import axi from "../util/request";
+import axi from "../../util/request";
 
 export default {
   name: "homeinset",
@@ -71,6 +85,8 @@ export default {
       firmvales: "",
       createdeptName: "",
       centerDialogVisible: false,
+      createdFirmName:"",
+      firmDialogVisible: false,
       ruleForm: {},
       rules: {
         userName: [
@@ -115,23 +131,36 @@ export default {
       })
     },
 
+    //打开创建部门 对话框
     createDept() {
       this.centerDialogVisible = true;
     },
+    createFirm(){
+      this.firmDialogVisible=true;
+    },
+
+
     //创建部门
-    createdeptName() {
+    createdeptNameOne() {
       if (window.confirm("确定创建该部门?")) {
-        axi.get("/dept/createDept?=" + this.createdeptName).then(res => {
+        axi.get("/dept/createDept?firmName=" + this.createdeptName).then(res => {
           if (res.data.code == 200) {
             this.createdeptName = "";
             this.centerDialogVisible = false;
           }
         })
       }
+    },
 
-
-    }
-
+    createfirmOne(){
+      //createdFirm 创建公司
+     axi.get("/firm/addFirm?firmName="+this.createdFirmName).then(res=>{
+       if (res.data.code == 200) {
+         this.createdFirmName = "";
+         this.firmDialogVisible = false;
+       }
+     })
+    },
 
   },//方法结束
 
