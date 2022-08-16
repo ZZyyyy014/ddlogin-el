@@ -113,34 +113,6 @@ methods:{
 }
 
 
-.iconfont{
-  margin-right: 10px;
-}
-
-.el-header {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
-  line-height: 80px;
-}
-
-.el-aside {
-  background-color: #D3DCE6;
-  color: #333;
-  text-align: center;
-  height: 100%;
-}
-
-.el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-.el-container {
-  margin-bottom: 40px;
-}
 .home-container{
   height: 100%;
 }

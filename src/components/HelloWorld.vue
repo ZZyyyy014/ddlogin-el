@@ -14,7 +14,7 @@
             </el-form-item>
 
             <el-form-item label="验证码" prop="captcha">
-              <el-input v-model="ruleForm.captcha"></el-input>
+              <el-input v-model="ruleForm.captcha" ></el-input>
               <el-image  :src="ruleForm.imgsrc"  @click="restcaptcha"> </el-image>
             </el-form-item>
 
@@ -62,7 +62,7 @@ export default {
       ruleForm: {
         username: "",
         password: "",
-        captcha: "",
+        captcha: "12345",
         imgsrc: "",
       },
       rules: {
