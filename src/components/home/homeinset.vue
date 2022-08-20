@@ -154,12 +154,15 @@ export default {
 
     createfirmOne(){
       //createdFirm 创建公司
-     axi.get("/firm/addFirm?firmName="+this.createdFirmName).then(res=>{
-       if (res.data.code == 200) {
-         this.createdFirmName = "";
-         this.firmDialogVisible = false;
-       }
-     })
+      if (window.confirm("确定创建该部门?")){
+        axi.get("/firm/addFirm?firmName="+this.createdFirmName).then(res=>{
+          if (res.data.code == 200) {
+            this.createdFirmName = "";
+            this.firmDialogVisible = false;
+          }
+        })
+      }
+
     },
 
   },//方法结束

@@ -1,7 +1,7 @@
 <template>
   <div>
           <el-table @selection-change="selectMore"
-                    :data="findAlllist.filter(data => !search || data.userRealName.toLowerCase().includes(search.toLowerCase()))"
+                    :data="findAlllist.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase()))"
                     border style="width: 100%">
             <el-table-column
               type="selection"
@@ -49,7 +49,7 @@
               <template slot="header"   slot-scope="scope">
                 <el-input
                   v-model="search"
-                  placeholder="当前页面员工真实名称搜索"/>
+                  placeholder="当前页面用户名称搜索"/>
               </template>
 
               <template slot-scope="scope">
@@ -84,22 +84,22 @@
               </el-form-item>-->
 
               <span  >所在公司</span>
-              <el-select  @visible-change="findAllFrim" v-model="dialogUpData.sparessV1" placeholder="所在公司">
+              <el-select  @visible-change="findAllFrim" v-model="dialogUpData.firmName" placeholder="所在公司">
                 <el-option
                   v-for="item in this.optionsFirms"
                   :key="item.firmId"
                   :label="item.firmName"
-                  :value="item.firmId">
+                  :value="item.firmName">
                 </el-option>
               </el-select>
 
               <span>部门</span>
-              <el-select  @visible-change="findAllDept" v-model="dialogUpData.deptId" placeholder="所在部门">
+              <el-select  @visible-change="findAllDept" v-model="dialogUpData.deptName" placeholder="所在部门">
                   <el-option
                     v-for="item in this.optionsDepts"
                     :key="item.deptId"
                     :label="item.deptName"
-                    :value="item.deptId">
+                    :value="item.deptName">
                   </el-option>
                 </el-select>
 
@@ -113,7 +113,7 @@
 
 
           <div class="inline-block">
-            <el-pagination  style="height:40px"
+            <el-pagination  style="height:40px;"
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :page-sizes="[10, 20, 50, 100]"
@@ -176,7 +176,9 @@ components:{//组件
     deletuserOne(index,row){
       if (window.confirm("確定刪除该选用户(单选)")) {
         axi.get("/user/deleteOneUser?userId=" + this.findAlllist[index].userId).then(res => {
-          alert("删除成功");
+          if(res.data.code==200){
+            alert("删除成功");
+          }
           //刷新页面 按了F5
           location.reload();
         })
@@ -195,7 +197,9 @@ components:{//组件
       if (selects.length) {
         if (window.confirm("確定刪除所选用户(多选)？")) {
           axi.get("/user/deleteListUser?userId=" + selects).then(res => {
-            alert("删除成功");
+            if(res.data.code==200){
+              alert("删除成功");
+            }
             //刷新页面 按了F5
             location.reload();
           })
@@ -238,7 +242,6 @@ components:{//组件
     },
 
     dialogUpOne(){
-
       axi.post("/user/updateUserFindAllVo",this.dialogUpData).then(res=>{
         if(res.status==200){
           this.dialogUpOpen=false;
