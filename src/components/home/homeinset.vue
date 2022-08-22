@@ -107,6 +107,10 @@ export default {
         if (valid) {
           axi.post("/user/AddUser", this.ruleForm).then(res => {
             //后台返回失败 res.data.code!=200
+            if (res.data.code==200){
+               alert("创建成功");
+              this.ruleForm="";
+            }
           })
         } else {
           alert("请检查参数,添加失败")

@@ -2,17 +2,10 @@
 
     <el-container class="home-container">
         <!--   头部区     -->
-      <el-header>
-        <el-row >
-          <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-          <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-          <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-          <el-col :span="6">
-            <div style="margin-left:10%">
+      <el-header style="background-color: #545c64">
+            <div  style="float: right;margin-top: 10px;">
             <el-button type="danger"  @click="loginOut">退出</el-button>
             </div>
-            <div class="grid-content bg-purple"></div></el-col>
-        </el-row>
       </el-header>
 
       <el-container>
@@ -46,12 +39,10 @@
 
             </el-submenu>
 
-
-
           </el-menu>
         </el-aside>
 <!--      右边展示部分  -->
-        <el-main>
+        <el-main >
           <router-view></router-view>
         </el-main>
       </el-container>

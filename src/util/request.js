@@ -4,7 +4,7 @@ import {promise} from "ora"; //映入axios
 const axi = axios.create({
 
   baseURL: 'http://192.168.202.151:9090/',
-  timeout: 6000,  //请求6秒自动断开连接
+  timeout: 10000,  //请求10秒自动断开连接
   headers:{
     jwtToken:"",
     'Access-Control-Allow-Credentials':"true"//1

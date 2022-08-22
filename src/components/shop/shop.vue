@@ -4,15 +4,24 @@
 
     <div style="margin-left:30%">
       <el-row :gutter="0">
-        <el-col :span="4">
-          <el-input v-model="FindAllShopVo.sparessV1" placeholder="绑定用户账号"></el-input>
+
+        <el-col :span="4" >
+          <el-button  @click="jmLoginStatus=true"   placeholder="登录注册店铺">登录注册店铺</el-button>
           <div class="grid-content bg-purple"></div>
         </el-col>
+
+
+        <el-col :span="4">
+          <el-input v-model="FindAllShopVo.userName" placeholder="绑定用户账号"></el-input>
+          <div class="grid-content bg-purple"></div>
+        </el-col>
+
         <el-col :span="4">
           <el-input v-model="FindAllShopVo.shopUserName" placeholder="店铺账号"></el-input>
           <div class="grid-content bg-purple"></div>
         </el-col>
         <el-col :span="4">
+
           <el-date-picker
             v-model="FindAllShopVo.shopLoginDateList"
             type="datetimerange"
@@ -22,6 +31,7 @@
           </el-date-picker>
           <div class="grid-content bg-purple"></div>
         </el-col>
+
         <el-col :span="4">
           <el-input v-model="FindAllShopVo.shopIp" placeholder="店铺IP"></el-input>
           <div class="grid-content bg-purple"></div>
@@ -36,7 +46,7 @@
     <el-table
       :data="ALLShoplist"
       border
-      style="width: 100%">
+      style="width: 100%"   >
       <el-table-column
         prop="shopUserName"
         label="店铺账号">
@@ -50,10 +60,10 @@
         label="店铺ip">
       </el-table-column>
 
-      <el-table-column
+<!--      <el-table-column
         prop="shopAuthorization"
-        label="店铺授权码">
-      </el-table-column>
+        label="店铺授权码" width="50px">
+      </el-table-column>-->
 
       <el-table-column
         prop="sparessV1"
@@ -62,20 +72,22 @@
 
       <el-table-column
         prop="returnCookie"
-        label="返回的cookie">
+        label="返回的cookie"  show-overflow-tooltip >
       </el-table-column>
 
       <el-table-column
         prop="userTypess"
-        label="账号类型">
+        label="账号类型:1京东   2拼多多   3淘宝">
       </el-table-column>
 
       <el-table-column
         fixed="right"
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="primary" size="medium">编辑修改</el-button>
-          <el-button type="primary" size="medium">删除</el-button>
+          <el-button   @click="handleClick(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button  @click="oneLogin(scope.row)" type="primary" size="mini">登录</el-button>
+          <el-button  @click="deleteOne(scope.row)" type="danger" size="mini">删除</el-button>
+<!--          <el-button type="primary" size="medium">删除</el-button>    -->
         </template>
       </el-table-column>
     </el-table>
@@ -85,7 +97,7 @@
       :visible.sync="shopDialog"
       width="30%">
 
-      <el-form :model="shopDialogModel" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form   :model="shopDialogModel" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 
         <el-form-item label="店铺账号" prop="shopUserName">
           <el-input v-model="shopDialogModel.shopUserName" readonly></el-input>
@@ -112,8 +124,8 @@
           <el-input v-model="shopDialogModel.sparessV1"></el-input>
         </el-form-item>
 
-        <el-form-item label="返回的cookie" prop="returnCookie">
-          <el-input v-model="shopDialogModel.returnCookie"></el-input>
+        <el-form-item label="返回的cookie" prop="returnCookie" >
+          <el-input v-model="shopDialogModel.returnCookie"   ></el-input>
         </el-form-item>
 
         <el-form-item label="账号类型" prop="userTypess">
@@ -137,6 +149,25 @@
       :total=this.total>
     </el-pagination>
 
+
+
+    <el-dialog
+      title="京麦登录"
+      :visible.sync="jmLoginStatus"
+      width="30%"
+        >
+        <el-input v-model="shopLoginDate.userName"   placeholder="请输入账号"/>
+        <el-input v-model="shopLoginDate.password"   placeholder="请输入密码"/>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="jmLoginStatus = false">取 消</el-button>
+    <el-button type="primary" @click="shopLogin()">确 定</el-button>
+  </span>
+    </el-dialog>
+
+
+
+
+
   </div>
 </template>
 <script>
@@ -150,6 +181,9 @@ export default {
       shopDialog: false,
       ALLShoplist: [],
       shopDialogModel: {},
+      jmLoginStatus:false,
+      deleteShopeOne:{},
+      shopLoginDate:{userName:"",password:""},
       rules: {
         shopUserName: {required: true, message: '店铺账号不能为空', trigger: 'blur'},
         userTypess: {required: true, message: '账号类型', trigger: 'blur'},
@@ -206,7 +240,37 @@ export default {
     },
     NoUpadate(){
       this.shopDialog = false;
-    }
+    },
+
+    shopLogin(){
+        axi.post("/user/ddUrl",this.shopLoginDate).then(res=>{
+              if(res.data.code==200){
+                window.open(res.data.msg,'_blank');
+                this.jmLoginStatus=false;
+              }
+        })
+    },
+    //一键登录~
+    oneLogin(row){
+         this.shopLoginDate.userName=row.shopUserName;
+         this.shopLoginDate.password=row.shopUserPasswrod;
+      axi.post("/user/ddUrl",this.shopLoginDate).then(res=>{
+        if(res.data.code==200){
+          window.open(res.data.msg,'_blank');
+        }
+      })
+    },
+    deleteOne(row){
+         this.deleteShopeOne.shopId=row.shopId
+         this.deleteShopeOne.sparessV1=row.sparessV1
+      axi.post("/shop/deteleOneShop",this.deleteShopeOne).then(res=>{
+        if(res.data.code==200){
+          alert("删除成功");
+          this.findAllShop();
+        }
+      })
+    },
+
 
   },//方法结束
 

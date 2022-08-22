@@ -280,10 +280,12 @@ components:{//组件
 
     created() {
     axi.get("/user/findAllLogin?pageNum="+this.pageNum+"&pageSize="+this.pagesize).then(res => {
+
       if (!res.data.state) {
         this.findAlllist = res.data.data.list
         this.total=res.data.data.total
       }
+
     })
   }
 
